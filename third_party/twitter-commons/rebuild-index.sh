@@ -2,11 +2,20 @@
 
 START=$PWD
 
+if (( $# != 1 ))
+then
+  echo "Must provide a sha"
+  exit 1
+fi
+
+sha=$1
+
 HERE=$(cd $(dirname $(readlink $0 || echo $0)) && pwd)
-cd $HERE
+cd $HERE/{sha}
 
 OUT=index.html
-SDIST_ROOT=/third_party/twitter-commons
+
+SDIST_ROOT=/third_party/twitter-commons/${sha}
 
 cat > $OUT << HEADER
 <html>
