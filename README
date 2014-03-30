@@ -1,0 +1,9 @@
+This repo hosts python library distributions not yet a available on pypi.
+
+In fact it may host distributions equivalent to those on pypi but in
+general only hosts distributions built from the authoritative repo
+mainline at a given sha.
+
+This allows pantsbuild projects to evolve quickly against third party
+mainlines when needed.
+
