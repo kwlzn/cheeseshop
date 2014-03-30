@@ -12,7 +12,7 @@ sha=$1
 
 HERE=$(cd $(dirname $(readlink $0 || echo $0)) && pwd)
 
-([[ -d ${HERE}/{sha} ]] || mkdir -p ${HERE}/{sha}) && cd ${HERE}/{sha}
+([[ -d ${HERE}/{sha} ]] || mkdir -p ${HERE}/${sha}) && cd ${HERE}/${sha}
 
 OUT=index.html
 
