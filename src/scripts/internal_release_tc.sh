@@ -113,16 +113,6 @@ banner "Building sdists for open source twitter/commons at ${sha}"
   cp -v dist/*.tar.gz ${destination}/
 ) || die "Failed to build open source twitter/commons distributions"
 
-banner "Building eggs from open source twitter/commons sdists at ${sha}"
-(
-  for sdist in `ls dist/*.tar.gz`
-    do
-      (tar xfz ${sdist} || die "Failed to extract ${sdist}") && \
-      (cd ${sdist%".tar.gz"}) && \
-      (python setup.py bdist_egg) && \
-      (cd ../..)
-    done
-) || die "Failed to build open source twitter/commons eggs"
 
 banner "Updating cheeseshop"
 (
