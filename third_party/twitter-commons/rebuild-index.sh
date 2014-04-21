@@ -1,7 +1,5 @@
 #!/bin/sh
 
-START=$PWD
-
 if (( $# != 1 ))
 then
   echo "Must provide a sha"
@@ -12,26 +10,34 @@ sha=$1
 
 HERE=$(cd $(dirname $(readlink $0 || echo $0)) && pwd)
 
-([[ -d ${HERE}/{sha} ]] || mkdir -p ${HERE}/${sha}) && cd ${HERE}/${sha}
+[[ -d ${HERE}/${sha} ]] || mkdir -p ${HERE}/${sha}
+
+
+SDIST_ROOT=third_party/twitter-commons/${sha}
+BDIST_ROOT=${SDIST_ROOT}/dist
+
+
+function create_index_file() {
+DIR=$1
+START=$PWD
+cd ${DIR}
 
 OUT=index.html
-
-SDIST_ROOT=/third_party/twitter-commons/${sha}
 
 cat > $OUT << HEADER
 <html>
   <head>
-    <title>Index of $SDIST_ROOT</title>
+    <title>Index of ${DIR}</title>
   </head>
   <body>
-    <h1>Index of $SDIST_ROOT</h1>
+    <h1>Index of ${DIR}</h1>
 HEADER
 
-for sdist in *.tar.gz *.zip *.tgz *.whl
+for file in *.tar.gz *.zip *.tgz *.whl *.egg
 do
-  if [ -r "$sdist" ]
+  if [ -r "${file}" ]
   then
-    echo "    <a href=\"$sdist\">$sdist</a>" >> $OUT
+    echo "    <a href=\"${file}\">${file}</a>" >> $OUT
   fi
 done
 
@@ -39,5 +45,11 @@ cat >> $OUT << FOOTER
   </body>
 </html>
 FOOTER
+
+cd ${START}
+}
+
+create_index_file ${SDIST_ROOT}
+create_index_file ${BDIST_ROOT}
 
 cd $START
