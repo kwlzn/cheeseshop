@@ -20,7 +20,7 @@ OS_COMMONS_ORIGIN=https://github.com/twitter/commons.git
 OS_COMMONS_STAGING=$HOME/.pantsbuild.pants.release/os_commons
 
 # TODO(John Sirois): For now, the requirements list must be kept in sync with pantsbuild/pants
-  # needs manually
+# needs manually
 PANTS_DEPS=(
   src/python/twitter/common/collections
   src/python/twitter/common/config
@@ -46,7 +46,7 @@ function usage() {
   echo
   echo "Usage: $0 (-h|-s [master])"
   echo " -h           print out this help message"
-  echo " -s [sha]     the sha to build pants from; by default the HEAD of origin/master"
+  echo " -s [sha]     the sha to build twitter/commons from; by default the HEAD of origin/master"
 
   if (( $# > 0 )); then
     die "$@"
@@ -112,6 +112,27 @@ banner "Building sdists for open source twitter/commons at ${sha}"
   ) && ([[ -d ${destination} ]] || mkdir -p ${destination}) && \
   cp -v dist/*.tar.gz ${destination}/
 ) || die "Failed to build open source twitter/commons distributions"
+
+
+
+banner "Building eggs from open source twitter/commons sdists at ${sha}"
+(
+  cd ${OS_COMMONS_STAGING}/dist && \
+  (
+  for sdist in *.tar.gz
+    do
+      tar xfz ${sdist}
+      cd ${sdist%".tar.gz"}
+      python setup.py bdist_egg
+      cp dist/*.egg ../
+      cd ../
+    done
+  ) && cd ../ && \
+  ([[ -d ${destination}/dist ]] || mkdir -p ${destination}/dist) && \
+  pwd && \
+  cp -v dist/*.egg ${destination}/dist
+) || die "Failed to build open source twitter/commons eggs"
+
 
 
 banner "Updating cheeseshop"
