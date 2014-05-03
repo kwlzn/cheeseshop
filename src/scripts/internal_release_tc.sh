@@ -107,7 +107,7 @@ banner "Building sdists for open source twitter/commons at ${sha}"
   (
     for dep in ${PANTS_DEPS[@]}
     do
-      ./pants.bootstrap setup_py --recursive ${dep} || die "Failed to build $dep"
+      ./pants setup_py --recursive ${dep} || die "Failed to build $dep"
     done
   ) && ([[ -d ${destination} ]] || mkdir -p ${destination}) && \
   cp -v dist/*.tar.gz ${destination}/
