@@ -32,7 +32,6 @@ PANTS_DEPS=(
   src/python/twitter/common/process
   src/python/twitter/common/python
   src/python/twitter/common/quantity
-  src/python/twitter/common/rwbuf
   src/python/twitter/common/threading
   src/python/twitter/common/util
 )
